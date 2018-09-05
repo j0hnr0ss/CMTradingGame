@@ -2,7 +2,14 @@
 Buy and sell stocks to grow your portfolio value and beat your opponents by having the most money at the end of the game
 
 
-Note: this game requires multiple players in order for prices to be set and matched. It uses fictional companies with fictional prices as set up by the administrator. Players can place both buy and sell orders which will get matched with other players' orders.
+Note: this game requires multiple players in order for prices to be set and matched. It uses fictional companies with fictional prices as set up by the administrator. Players can place both buy and sell orders which will get matched with other players' orders. The game needs to be hosted. For an example, see: josatech.pythonanywhere.com
+
+# Set up the game (or reset after playing)
+
+- Create an account called 'admin' or 'Market'
+- As an admin you can log into the Django standard admin page to change the share names and starting share prices
+- Starting share prices can also be set by having an "IPO" - or having a manual auction at the start of play
+- As an admin you can see the Deal Journal and Order Book, you can delete all previous orders and trades and you can set an automated market player who places a random order after each new order (refer to urls.py and simply visit those urls to activate) 
 
 # How gameplay works:
 
