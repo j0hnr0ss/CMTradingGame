@@ -1,0 +1,158 @@
+{% extends 'orders/base.html' %}
+{% block title %}Exchange{% endblock %}
+{% block exchange_active %}active{% endblock %}
+{% load humanize %}
+
+{% block head %}
+{% if fundr == 'Market' %}
+<script type="text/javascript">
+window.setTimeout('refreshPage()', 5000);
+    function refreshPage()
+    {
+        window.location.reload();
+    }
+</script>
+{% endif %}
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row">
+
+    {% for key,value in exchange_dict.items %}
+        <div class="col-sm-12 col-md-2">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                    <h3 class="panel-title">{{ key }}</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Shares</th>
+                                <th style="text-align: center">Bid</th>
+                                <th style="text-align: center">Offer</th>
+                                <th style="text-align: center">Shares</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td style="text-align: center">{{ value.o3 }}</td>
+                                <td style="text-align: center">{{ value.qo3 }}</td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td style="text-align: center">{{ value.o2 }}</td>
+                                <td style="text-align: center">{{ value.qo2 }}</td>
+                            </tr>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td style="text-align: center"><strong>{{ value.o1 }}</strong></td>
+                                <td style="text-align: center">{{ value.qo1 }}</td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">{{ value.qb1 }}</td>
+                                <td style="text-align: center"><strong>{{ value.b1 }}</strong></td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">{{ value.qb2 }}</td>
+                                <td style="text-align: center">{{ value.b2 }}</td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">{{ value.qb3 }}</td>
+                                <td style="text-align: center">{{ value.b3 }}</td>
+                                <td> </td>
+                                <td> </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Last traded price:</td>
+                                {% for key2,value2 in close_prices.items %}
+                                    {% if key2 == key %}
+                                        <td>{{ value2 }}</td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            <!--<tr>
+                                <td style="text-align: center" colspan="4"><input type="number" placeholder="# of Shares"></td>
+                            </tr>
+
+                            <tr>
+                                <td></td>
+                                <td style="text-align: center"> <button type="submit" class="btn btn-success">Buy</button> </td>
+                                <td style="text-align: center"> <button type="submit" class="btn btn-danger">Sell</button> </td>
+                                <td></td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div id="content-row" class="row">
+
+        <div class="col-sm-12 col-md-2 content">
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ranking of the best funds</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center">Fund Name</th>
+                                <th style="text-align: center">Fund NAV</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,value in portfolio_dict.items %}
+                            {% if key != 'Market' %}
+                            <tr>
+                                <td style="text-align: center">{{ key }}</td>
+                                <td style="text-align: center">{{ value.portfoliovalue|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="content" class="col-md-8 content">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Index and Stock Performance</h3>
+                </div>
+                <div class="panel-body">
+                    {{ chart_index.as_html }}
+                    Index growth:
+                    {{ index_growth|floatformat:2|intcomma }}%
+                    {{ chart_shell.as_html }}
+                    {{ chart_allianz.as_html }}
+                    {{ chart_bnp.as_html }}
+                    {{ chart_daimler.as_html }}
+                    {{ chart_tesla.as_html }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'orders/base.html' %}
+{% load humanize %}
+{% block title %}Portfolio{% endblock %}
+{% block portfolio_active %}active{% endblock %}
+
+
+{% block body %}
+
+<div class="col-sm-12 col-md-9">
+        <h2>{{ fundr }} portfolio</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Shares</th>
+                            <th>Quantity bought</th>
+                            <th>Quantity sold</th>
+                            <th>Total shares</th>
+                            <th>Average buy price</th>
+                            <th>Average sell price</th>
+                            <th>Last traded value</th>
+                            <th>Value of shares</th>
+                            <th>Percent of portfolio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key,value in portfolio_dict.items %}
+                            {% if key == fundr %}
+                                {% for key3,value3 in value.items %}
+                                {% for key2,value2 in value3.items %}
+                                <tr>
+                                    <td>{{ key2 }}</td>
+                                    <td>{{ value2.buys|floatformat:0|intcomma }}</td>
+                                    <td>{{ value2.sells|floatformat:0|intcomma }}</td>
+                                    <td>{{ value2.quantity|floatformat:0|intcomma }}</td>
+                                    <td>{{ value2.avgbuyprice|floatformat:2|intcomma }}</td>
+                                    <td>{{ value2.avgsellprice|floatformat:2|intcomma }}</td>
+                                    <td>{{ value2.closeprice|floatformat:2|intcomma }}</td>
+                                    <td>{{ value2.value|floatformat:0|intcomma }}</td>
+                                    <td>{{ value2.percent|floatformat:1|intcomma }}%</td>
+                                </tr>
+                                {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <tr>
+                            <td><strong>Total share value</strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            {% for key,value in portfolio_dict.items %}
+                                {% if key == fundr %}
+                                    <td><strong>{{ value.sharevalue|floatformat:0|intcomma }}</strong></td>
+                                    <td><strong>{{ value.sharepercent|floatformat:1|intcomma }}%</strong></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Open value</th>
+                            <th>Buy trades</th>
+                            <th>Sell trades</th>
+                            <th>Close value</th>
+                            <th>Percent of portfolio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cash</td>
+                            <td>{{ startvalue|intcomma }}</td>
+                            {% for key,value in portfolio_dict.items %}
+                                {% if key == fundr %}
+                                    <td>{{ value.buytrades|floatformat:0|intcomma }}</td>
+                                    <td>{{ value.selltrades|floatformat:0|intcomma }}</td>
+                                    <td><strong>{{ value.closecash|floatformat:0|intcomma }}</strong></td>
+                                    <td>{{ value.cashpercent|floatformat:1|intcomma }}%</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-7">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <tbody>
+                        {% for key,value in portfolio_dict.items %}
+                            {% if key == fundr %}
+                            {% if value.penalty != 0 %}
+                            <tr>
+                                <td>Penalty for cash over 10.000</td>
+                                <td>{{ value.penalty|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% endif %}
+                            {% if value.overdraft != 0 %}
+                            <tr>
+                                <td>Interest on cash overdraft</td>
+                                <td>{{ value.overdraft|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td>Bonus for diversification</td>
+                                <td>{{ value.divbonus|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% if value.margin != 0 %}
+                            <tr>
+                                <td>Margin account for short selling</td>
+                                <td>{{ value.margin|floatformat:0|intcomma }}</td>
+                            </tr>
+                            <tr>
+                                <td>Interest on margin account</td>
+                                <td>{{ value.margininterest|floatformat:0|intcomma }}</td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td><strong>Total portfolio value</strong></td>
+                                <td><strong>{{ value.portfoliovalue|floatformat:0|intcomma }}</strong></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Portfolio growth</strong></td>
+                                <td><strong>{{ value.portfoliogrowth|floatformat:2|intcomma }}%</strong></td>
+                            </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

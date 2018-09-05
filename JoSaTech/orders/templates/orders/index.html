@@ -1,0 +1,80 @@
+{% extends 'orders/base.html' %}
+{% block title %}Index{% endblock %}
+{% block body %}
+
+ <div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-6">
+        <h3>JoSa Technologies proudly presents the Capital Markets Trading Game</h3>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Aim of the game:</h4>
+                    <p>Buy and sell stocks to grow your portfolio value and beat your opponents by having the most money at the end of the game</p>
+                    <br>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>How it works:</h4>
+                        <ul>
+                            <li>
+                                <span>On the <strong>New Order</strong> tab, select the stock, quantity and price that you want to trade at and click on either Buy or Sell</span>
+                            </li>
+                            <li>
+                                <span>As long as the stock hasn't traded or only partially traded, you can cancel your order by clicking on the X next to the order</span>
+                            </li>
+                            <li>
+                                <span>The Filled column shows how many of your order (Quantity) has been matched/traded in the market</span>
+                            </li>
+                            <li>
+                                <span>Refer to the <strong>Portfolio Analytics</strong> table to see what the last traded price of the stocks were, your price has to be within a 50% range of the last price. No negative values are possible</span>
+                            </li>
+                            <li>
+                                <span>On the <strong>Exchange</strong> tab you can see what the highest offers (sell) and lowest bids (buy) are for each share, these are the values that your colleagues are willing to trade at</span>
+                            </li>
+                            <li>
+                                <span>Also on the <strong>Exchange</strong> tab you can see which fund is currently in the lead</span>
+                            </li>
+                            <li>
+                                <span>Refer to the <strong>Portfolio</strong> tab where you can see which stocks you are currently invested in, how much cash is in your fund and what your total portfolio value is</span>
+                            </li>
+                            <li>
+                                <span>Note that your investors are <strong>penalizing</strong> your fund for having too much cash; they don't want you to have any more than 10.000 euros in cash and for every euro you have over that, they expect 5% "interest"</span>
+                            </li>
+                            <li>
+                                <span>Your investors want to diversify their portfolio and will offer a <strong>bonus</strong> of 10.000 if you have at least 5% of each stock</span>
+                            </li>
+                            <li>
+                                <span>You have secured a credit facility from your local lender. Your fund can therefore have a negative cash balance, however the lender charges 10% interest</span>
+                            </li>
+                            <li>
+                                <span>It is possible to <strong>short</strong> stock, a margin account of 50% of the short value will automatically be opened (and subtracted from cash) which bears an interest of 4%</span>
+                            </li>
+                        </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="col-sm-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Happy trading!</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+     <i>Brought to you by John Ross and San Idrissov</i>
+
+ </div>
+
+{% endblock %}

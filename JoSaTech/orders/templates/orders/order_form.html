@@ -1,0 +1,175 @@
+{% extends 'orders/base.html' %}
+{% load humanize %}
+{% block title %}New order{% endblock %}
+{% block orderadd_active %}active{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-6">
+        <h2>Order Form</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'orders/form_template.html' %}
+                        {% if messages %}
+                        <div class="col-sm-offset-2">
+                            {% for message in messages %}
+                            <div class="text-danger small">{{ message }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-12">
+                                <button type="submit" name="buy" value=1 class="btn btn-success">Buy</button>&nbsp&nbsp
+                                <button type="submit" name="sell" value=1 class="btn btn-danger">Sell</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12 col-md-6">
+        <h2>Portfolio Analytics</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                   <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Shares</th>
+                                <th>Shares in portfolio</th>
+                                <th>Average buy price</th>
+                                <th>Average sell price</th>
+                                <th>Last traded value</th>
+                                <th>Percent of portfolio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key,value in portfolio_dict.items %}
+                                {% if key == fundr %}
+                                    {% for key3,value3 in value.items %}
+                                    {% for key2,value2 in value3.items %}
+                                    <tr>
+                                        <td>{{ key2 }}</td>
+                                        <td>{{ value2.quantity|floatformat:0|intcomma }}</td>
+                                        <td>{{ value2.avgbuyprice|floatformat:2|intcomma }}</td>
+                                        <td>{{ value2.avgsellprice|floatformat:2|intcomma }}</td>
+                                        <td>{{ value2.closeprice|floatformat:2|intcomma }}</td>
+                                        <td>{{ value2.percent|floatformat:1|intcomma }}%</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endfor %}
+                            <tr><td></td></tr>
+                            {% for key,value in portfolio_dict.items %}
+                                {% if key == fundr %}
+                                    <td colspan="2"><strong>Cash available:</strong></td>
+                                    <td><strong>{{ value.closecash|floatformat:0|intcomma }}</strong></td>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="col-sm-12 col-md-6">
+<h2>Buy Orders</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Share Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total Order</th>
+                        <th>Filled</th>
+                        <th>Cancel Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in user_buyorders|dictsortreversed:'id' %}
+                            <tr>
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.share_name }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.price }}</td>
+                                <td>{{ order.total_order }}</td>
+                                <td>{{ order.filled }}</td>
+                                <td>
+                                    {% if order.filled < order.quantity %}
+                                    <form action="{% url 'orders:delete_order' order.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="order_id" value="{{ item.id }}" />
+                                        <button type="submit" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-sm-12 col-md-6">
+<h2>Sell Orders</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Share Name</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Total Order</th>
+                        <th>Filled</th>
+                        <th>Cancel Order</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in user_sellorders|dictsortreversed:'id' %}
+                            <tr>
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.share_name }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.price }}</td>
+                                <td>{{ order.total_order }}</td>
+                                <td>{{ order.filled }}</td>
+                                <td>
+                                    {% if order.filled < order.quantity %}
+                                    <form action="{% url 'orders:delete_order' order.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="order_id" value="{{ item.id }}" />
+                                        <button type="submit" class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </form>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

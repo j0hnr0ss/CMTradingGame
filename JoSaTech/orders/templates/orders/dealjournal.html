@@ -1,0 +1,56 @@
+{% extends 'orders/base.html' %}
+{% block title %}Dealjournal{% endblock %}
+{% block dealjournal_active %}active{% endblock %}
+
+{% block body %}
+
+<h1>Deal Journal</h1>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Trade ID</th>
+                            <th>Share Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Order</th>
+                            <th>Buying Fund</th>
+                            <th>Order ID</th>
+                            <th>Selling Fund</th>
+                            <th>Order ID</th>
+                            <th>Index</th>
+                            <th>Delete Trade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trade in all_trades|dictsortreversed:'id' %}
+                            <tr>
+                                <td>{{ trade.trade_id }}</td>
+                                <td>{{ trade.share_name }}</td>
+                                <td>{{ trade.quantity }}</td>
+                                <td>{{ trade.price }}</td>
+                                <td>{{ trade.total_order }}</td>
+                                <td>{{ trade.buying_fund }}</td>
+                                <td>{{ trade.buying_orderID }}</td>
+                                <td>{{ trade.selling_fund }}</td>
+                                <td>{{ trade.selling_orderID }}</td>
+                                <td>{{ trade.index|floatformat:2 }}</td>
+                                <td>
+                                    <form action="{% url 'orders:delete_trade' trade.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="trade_id" value="{{ trade.id }}" />
+                                        <button type="submit" name="delete" value=1 class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

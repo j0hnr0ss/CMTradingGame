@@ -1,0 +1,54 @@
+{% extends 'orders/base.html' %}
+{% block title %}Order book{% endblock %}
+{% block orderbook_active %}active{% endblock %}
+
+{% block body %}
+
+<h1>Order Book</h1>
+    <div class="row">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Fund</th>
+                            <th>Share Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Total Order</th>
+                            <th>Buy/Sell</th>
+                            <th>Filled Shares</th>
+                            <th>Timestamp</th>
+                            <th>Cancel Order</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in all_orders|dictsortreversed:'id' %}
+                            <tr>
+                                <td>{{ order.order_id }}</td>
+                                <td>{{ order.fund_name }}</td>
+                                <td>{{ order.share_name }}</td>
+                                <td>{{ order.quantity }}</td>
+                                <td>{{ order.price }}</td>
+                                <td>{{ order.total_order }}</td>
+                                <td>{{ order.buysell }}</td>
+                                <td>{{ order.filled }}</td>
+                                <td>{{ order.timestamp }}</td>
+                                <td>
+                                    <form action="{% url 'orders:delete_order' order.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="order_id" value="{{ order.id }}" />
+                                        <button type="submit" name="delete" value=1 class="btn btn-default btn-sm">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
